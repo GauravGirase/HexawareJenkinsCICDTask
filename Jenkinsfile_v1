@@ -1,3 +1,4 @@
+//Creating Docker after building an war and push to Docker Hub repo So that we can deploy Dockerize Application On any Servers
 pipeline {
     agent any
 
