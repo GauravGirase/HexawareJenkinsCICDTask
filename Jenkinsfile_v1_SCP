@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('CheckOut') {
+            steps {
+                git branch: 'main', url: 'https://github.com/GauravGirase/HexawareJenkinsCICDTask.git'
+
+            }
+        }
+        stage("Deploy An application"){
+            steps {
+                sshagent(['dev-server']) {
+                    sh "scp /var/lib/jenkins/workspace/filetransfer/* ec2-user@172.31.33.17:/usr/bin/Gaurav"
+            }
+        }
+        }
+    }
+    
+}
