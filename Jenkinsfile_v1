@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('CheckOut') {
+            steps {
+                git branch: 'main', url: 'https://github.com/GauravGirase/springBootAppDemo.git'
+
+            }
+        }
+        stage('Build') {
+            tools {
+                    maven "M3"
+                 }
+            steps {
+                sh 'mvn clean package'
+
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER} ."
+
+            }
+        }
+        stage('Run Dockerize Application') {
+            steps {
+                sh "docker run -p 9000:8080 -d --name ${env.JOB_NAME}_${env.BUILD_NUMBER} gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER}"
+            }
+        }
+    }
+    
+}
