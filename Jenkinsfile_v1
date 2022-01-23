@@ -33,6 +33,11 @@ pipeline {
                     sh "docker push gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER}"
             }
         }
+        stage('Remove image after Push') {
+            steps {
+                    sh "docker rmi gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER}"
+            }
+        }
         stage("Deploy An application"){
             steps {
                 sshagent(['dev-server']) {
