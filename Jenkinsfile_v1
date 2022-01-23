@@ -23,9 +23,13 @@ pipeline {
 
             }
         }
-        stage('Run Dockerize Application') {
+        stage('Push Docker image') {
             steps {
-                sh "docker run -p 9000:8080 -d --name ${env.JOB_NAME}_${env.BUILD_NUMBER} gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER}"
+                withCredentials([string(credentialsId: 'docpwd', variable: 'dockerpass')]) {
+                        // some block
+                        sh "docker login -u gauravdocker1234 -p ${dockerpass}"
+                    }
+                    sh "docker push gauravdocker1234/${env.JOB_NAME}:${env.BUILD_NUMBER}"
             }
         }
     }
